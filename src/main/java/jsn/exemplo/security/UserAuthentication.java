@@ -48,8 +48,7 @@ public class UserAuthentication extends AbstractAuthenticationProcessingFilter  
 	                                                HttpServletResponse res) throws AuthenticationException {
 	    
 		   User usuarioSetup = new User();
-		   //Parametros.USERNAME_TESTE,Parametros.PASSWORD_TESTE 
-		   
+	
 		   usuarioSetup.setPassword(Parametros.PASSWORD_TESTE);
 		   usuarioSetup.setUsername(Parametros.USERNAME_TESTE);
 		   try {

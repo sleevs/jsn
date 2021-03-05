@@ -19,14 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 import jsn.exemplo.entidade.User;
 import jsn.exemplo.security.JwtTokenUtil;
 import jsn.exemplo.security.JwtUser;
-import jsn.exemplo.security.UserRequest;
 import jsn.exemplo.security.UserResponse;
 import jsn.exemplo.service.UserService;
 
 
 @RestController
 @CrossOrigin
-@RequestMapping(value = "/freedom_")
+@RequestMapping(value = "/logar")
 public class UserSecurityRest {
 	
 	
@@ -42,36 +41,14 @@ public class UserSecurityRest {
 	private JwtUser userDetailsService;
 	
 	//  private static final User usuarioSetup = new User(Parametros.USERNAME_TESTE,Parametros.PASSWORD_TESTE );
-    
-		
-	@RequestMapping 
-	public User autenticarUsuario(@RequestBody User user) throws Exception {
-		
-		
-		
-		System.out.println("LOGIN " );
-		
-		return userService.autenticarUsuario(user);
-	}
-	
-	
-	
-	
+  
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody UserRequest authenticationRequest) throws Exception {
-		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+	public ResponseEntity<?> createAuthenticationToken(@RequestBody User authenticationRequest) throws Exception {
+		userService.authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 		final UserDetails userDetails = userDetailsService
 				.loadUserByUsername(authenticationRequest.getUsername());
 		final String token = jwtTokenUtil.generateToken(userDetails);
 		return ResponseEntity.ok(new UserResponse(token));
 	}
-	private void authenticate(String username, String password) throws Exception {
-		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-		} catch (DisabledException e) {
-			throw new Exception("USER_DISABLED", e);
-		} catch (BadCredentialsException e) {
-			throw new Exception("INVALID_CREDENTIALS", e);
-		}
-	}
+	
 }

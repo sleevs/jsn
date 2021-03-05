@@ -22,7 +22,7 @@ public class JwtUser implements UserDetailsService {
 			return new User("admin", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",
 					new ArrayList<>());
 		} else {
-			throw new UsernameNotFoundException("User not found with username: " + username);
+			throw new UsernameNotFoundException("username desconhecido : " + username);
 		}
 	}
 }

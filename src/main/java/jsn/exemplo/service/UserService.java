@@ -1,5 +1,9 @@
 package jsn.exemplo.service;
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import jsn.exemplo.entidade.User;
@@ -9,57 +13,24 @@ import jsn.exemplo.entidade.User;
  *
  * @author JSN
  * 
- * classe responsavel pelos servico do modelo de dado User 
+ *         classe responsavel pelos servico do modelo de dado User
  */
 
 @Service
 public class UserService {
-	
-   
-	private User usuario ;
 
-//	@Autowired
-//	private PasswordEncoder bcryptEncoder;
+	private AuthenticationManager authenticationManager;
 
 	
-   public String userStatus() {
-		
-		
-		StringBuilder retorno = new StringBuilder() ;
-		retorno.append("JSNSOFTWARE - MICROSERVIÇO FUNCIONANDO ");
-		
-		return retorno.toString();
-	}
-   
-   
-	public User autenticarUsuario(User user) throws Exception {
-		
-		usuario = new User();
-		
+	
+	public void authenticate(String username, String password) throws Exception {
 		try {
-			
-			if(user.getUsername().equals("admin") && user.getPassword().equals("12345") ){
-				
-				
-				
-				usuario.setUsername(user.getUsername());
-				usuario.setTag("USUÁRIO COM ACESSO");
-				StringBuilder retorno = new StringBuilder() ;
-				
-				
-				return usuario;
-			}
-			
-			usuario.setTag("USUÁRIO SEM ACESSO");
-			
-			return usuario ;
-			
-		}catch(Exception e) {
-			throw new Exception("", e);
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+		} catch (DisabledException e) {
+			throw new Exception("USER_DISABLED", e);
+		} catch (BadCredentialsException e) {
+			throw new Exception("INVALID_CREDENTIALS", e);
 		}
 	}
-	
-	
-	
 
 }
