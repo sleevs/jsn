@@ -1,4 +1,4 @@
-# Demostração de alplicação com segurança de acesso
+# Demostração de aplicação com segurança de acesso
 
  Demostração de uma API utilizando Springboot com OAuth2 e JWT .
  Endpoint de listagem é protegido por Jwt authentication, usando Bearer Token .
